@@ -214,7 +214,7 @@ public class MailingListIssuesTest extends DummyServerTest {
         Assert.assertEquals(1, postdata.getParams().size());
         Assert.assertEquals("foo", postdata.getParams().get(0).getName());
         Assert.assertEquals("bar", postdata.getParams().get(0).getValue());
-        /** TODO
+        /** TODO Tested on osx but failed
          It runs fine until the bar assert which is different.
          it expects bar but gets bar\u0000\u0000\u0000\u0000...foo=bar where the \u0000 repeats a lot, total char array for value has size of 8195
          */
