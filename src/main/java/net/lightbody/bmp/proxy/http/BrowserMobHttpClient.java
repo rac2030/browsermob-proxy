@@ -1,6 +1,8 @@
 package net.lightbody.bmp.proxy.http;
 
 import net.lightbody.bmp.core.har.*;
+import net.lightbody.bmp.proxy.auth.ClientCertAuth;
+import net.lightbody.bmp.proxy.auth.IAuthSSLContext;
 import net.lightbody.bmp.proxy.util.*;
 import net.sf.uadetector.ReadableUserAgent;
 import net.sf.uadetector.UserAgentStringParser;
@@ -96,13 +98,13 @@ public class BrowserMobHttpClient {
     private static final int MAX_REDIRECT = 10;
     private AtomicInteger requestCounter;
 
-    public BrowserMobHttpClient(StreamManager streamManager, AtomicInteger requestCounter) {
+    public BrowserMobHttpClient(StreamManager streamManager, AtomicInteger requestCounter, IAuthSSLContext clientAuth) {
         this.requestCounter = requestCounter;
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         hostNameResolver = new BrowserMobHostNameResolver(new Cache(DClass.ANY));
 
         this.socketFactory = new SimulatedSocketFactory(hostNameResolver, streamManager);
-        this.sslSocketFactory = new TrustingSSLSocketFactory(hostNameResolver, streamManager);
+        this.sslSocketFactory = new TrustingSSLSocketFactory(hostNameResolver, streamManager, clientAuth);
 
         this.sslSocketFactory.setHostnameVerifier(new AllowAllHostnameVerifier());
 

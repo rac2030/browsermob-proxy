@@ -1,5 +1,6 @@
 package net.lightbody.bmp.proxy.http;
 
+import net.lightbody.bmp.proxy.auth.IAuthSSLContext;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.scheme.HostNameResolver;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -26,8 +27,31 @@ public class TrustingSSLSocketFactory extends SSLSocketFactory {
         TLSv1
     }
 
+
     private static SSLContext sslContext;
     private StreamManager streamManager;
+
+    public static TrustManager easyTrustManager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(
+                        X509Certificate[] chain,
+                        String authType) throws CertificateException {
+                    // Oh, I am easy!
+                }
+
+                @Override
+                public void checkServerTrusted(
+                        X509Certificate[] chain,
+                        String authType) throws CertificateException {
+                    // Oh, I am easy!
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+
+            };
 
     static {
         try {
@@ -35,27 +59,7 @@ public class TrustingSSLSocketFactory extends SSLSocketFactory {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("TLS algorithm not found! Critical SSL error!", e);
         }
-        TrustManager easyTrustManager = new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(
-                    X509Certificate[] chain,
-                    String authType) throws CertificateException {
-                // Oh, I am easy!
-            }
 
-            @Override
-            public void checkServerTrusted(
-                    X509Certificate[] chain,
-                    String authType) throws CertificateException {
-                // Oh, I am easy!
-            }
-
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-                return null;
-            }
-
-        };
         try {
             sslContext.init(null, new TrustManager[]{easyTrustManager}, null);
         } catch (KeyManagementException e) {
@@ -63,8 +67,10 @@ public class TrustingSSLSocketFactory extends SSLSocketFactory {
         }
     }
 
-    public TrustingSSLSocketFactory(HostNameResolver nameResolver, StreamManager streamManager) {
-        super(sslContext, nameResolver);
+    public TrustingSSLSocketFactory(HostNameResolver nameResolver, StreamManager streamManager, IAuthSSLContext clientAuth) {
+        /** If clientAuth is set, get the ssl context from its implementation,
+         * otherwise use the default ssl context **/
+        super( (clientAuth == null)? sslContext : clientAuth.getSSLContext(), nameResolver);
         assert nameResolver != null;
         assert streamManager != null;
         this.streamManager = streamManager;

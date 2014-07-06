@@ -2,6 +2,7 @@ package net.lightbody.bmp.proxy;
 
 import net.lightbody.bmp.core.har.*;
 import net.lightbody.bmp.core.util.ThreadUtils;
+import net.lightbody.bmp.proxy.auth.IAuthSSLContext;
 import net.lightbody.bmp.proxy.http.BrowserMobHttpClient;
 import net.lightbody.bmp.proxy.http.RequestInterceptor;
 import net.lightbody.bmp.proxy.http.ResponseInterceptor;
@@ -41,6 +42,7 @@ public class ProxyServer {
     private BrowserMobProxyHandler handler;
     private int pageCount = 1;
     private AtomicInteger requestCounter = new AtomicInteger(0);
+    private IAuthSSLContext clientAuth;
 
     public ProxyServer() {
     }
@@ -68,7 +70,7 @@ public class ProxyServer {
         handler = new BrowserMobProxyHandler();
         handler.setJettyServer(server);
         handler.setShutdownLock(new Object());
-        client = new BrowserMobHttpClient(streamManager, requestCounter);
+        client = new BrowserMobHttpClient(streamManager, requestCounter, clientAuth);
         client.prepareForBrowser();
         handler.setHttpClient(client);
 
@@ -364,5 +366,19 @@ public class ProxyServer {
         if (options.containsKey("httpProxy")) {
             client.setHttpProxy(options.get("httpProxy"));
         }
+    }
+
+    public IAuthSSLContext getClientAuth() {
+        return clientAuth;
+    }
+
+    /**
+     * Set Client Auth implementation which can return the corresponding SSL context.
+     * File based certificate implementation is in net.lightbody.bmp.proxy.auth.ClientCertAuth.
+     * If you need any other implementation, please implement net.lightbody.bmp.proxy.auth.IAuthSSLContext
+     * @param clientAuth
+     */
+    public void setClientAuth(IAuthSSLContext clientAuth) {
+        this.clientAuth = clientAuth;
     }
 }
