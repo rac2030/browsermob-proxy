@@ -1,3 +1,4 @@
+![](https://travis-ci.org/rac2030/browsermob-proxy.svg)
 BrowserMob Proxy
 ================
 
