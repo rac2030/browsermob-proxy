@@ -1,4 +1,5 @@
-![](https://travis-ci.org/rac2030/browsermob-proxy.svg)
+[![](https://travis-ci.org/rac2030/browsermob-proxy.svg)](https://travis-ci.org/rac2030/browsermob-proxy.svg)
+![](https://reposs.herokuapp.com/?path=rac2030/browsermob-proxy)
 BrowserMob Proxy
 ================
 
