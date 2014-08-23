@@ -1,5 +1,9 @@
-[![](https://travis-ci.org/rac2030/browsermob-proxy.svg)](https://travis-ci.org/rac2030/browsermob-proxy.svg)
-![](https://reposs.herokuapp.com/?path=rac2030/browsermob-proxy)
+[![CI Build](https://travis-ci.org/rac2030/browsermob-proxy.svg)](https://travis-ci.org/rac2030/browsermob-proxy.svg)
+[![Coverage Status](https://img.shields.io/coveralls/rac2030/browsermob-proxy.svg)](https://coveralls.io/r/rac2030/browsermob-proxy)
+[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Badges](http://img.shields.io/:badges-2/2-ff6799.svg)](https://github.com/badges/badgerbadgerbadger)
+![Repo size](https://reposs.herokuapp.com/?path=rac2030/browsermob-proxy) 
+
 BrowserMob Proxy
 ================
 
